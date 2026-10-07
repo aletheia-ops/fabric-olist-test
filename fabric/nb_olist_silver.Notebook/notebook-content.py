@@ -63,6 +63,7 @@ def write_table(df, name):
 # CELL ********************
 
 # 1) silver_orders
+# edited on GitHub: 주문 ID가 없는 행과 중복 주문을 제거한다
 orders = read_table("bronze_orders")
 
 silver_orders = (
