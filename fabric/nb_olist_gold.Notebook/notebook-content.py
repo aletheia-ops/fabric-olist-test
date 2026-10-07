@@ -19,6 +19,8 @@
 # | gold_order_status | 주문 상태 | order_count, share_pct |
 # 
 # 매출 집계에서는 `canceled`, `unavailable` 상태의 주문을 뺍니다.
+# 
+# 담당자: XXX | 최종 수정: k20 실습
 
 # PARAMETERS CELL ********************
 
