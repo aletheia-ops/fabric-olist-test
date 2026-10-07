@@ -136,11 +136,34 @@ gold_order_status = (
 
 # CELL ********************
 
+# 5) 판매자별 매출 — feature 브랜치에서 추가한 기능
+gold_seller_sales = (
+    sales.groupBy("seller_id")
+    .agg(
+        F.countDistinct("order_id").alias("order_count"),
+        F.count("*").alias("item_count"),
+        F.round(F.sum("price"), 2).alias("revenue"),
+    )
+    .withColumn("_env", F.lit(env))
+    .orderBy(F.desc("revenue"))
+)
+display(gold_seller_sales.limit(5))
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
 # 4) 저장하고 결과 요약을 파이프라인에 돌려준다
 counts = {
     "gold_monthly_sales": write_table(gold_monthly_sales, "gold_monthly_sales"),
     "gold_category_sales": write_table(gold_category_sales, "gold_category_sales"),
     "gold_order_status": write_table(gold_order_status, "gold_order_status"),
+    "gold_seller_sales": write_table(gold_seller_sales, "gold_seller_sales"), # ← 추가
 }
 total_revenue = gold_monthly_sales.agg(F.round(F.sum("revenue"), 2)).first()[0]
 print(f"total revenue (BRL): {total_revenue:,.2f}")
